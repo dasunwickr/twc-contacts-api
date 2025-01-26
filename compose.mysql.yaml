@@ -1,0 +1,28 @@
+services:
+  mysql8:
+    image: mysql:8
+    container_name: mysql8
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: admin-contacts
+      MYSQL_DATABASE: twc-contacts
+    volumes:
+      - mysql8-data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    command: --bind-address=0.0.0.0
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 20s
+      retries: 10
+    networks:
+      - twc_network
+
+networks:
+  twc_network:
+    name: twc_network
+    driver: bridge
+
+volumes:
+  mysql8-data:
+    name: mysql8-data

@@ -1,0 +1,17 @@
+services:
+  twc-contacts-api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: twc-contacts-api-dev
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - '127.0.0.1:3000:3000'
+    networks:
+      - twc_network
+
+networks:
+  twc_network:
+    name: twc_network
+    external: true
