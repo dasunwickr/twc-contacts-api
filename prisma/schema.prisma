@@ -13,20 +13,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//===========================================
+enum Gender {
+  Male
+  Female
+}
+
+//===================================================================
 // User
-//===========================================
+//===================================================================
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  provider String 
-  providerId String
-  password String?
-  verificationCode String?
-  status String
-  firstName String
-  lastName String
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contacts Contact[]
 
   @@map("users")
+}
+
+//===================================================================
+// Contact
+//===================================================================
+
+model Contact {
+  id          Int      @id @default(autoincrement())
+  name        String
+  gender      Gender
+  email       String
+  phoneNumber String
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  userId      Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("contacts")
 }
